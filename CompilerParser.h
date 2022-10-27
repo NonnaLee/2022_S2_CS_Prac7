@@ -8,6 +8,11 @@
 #include "Token.h"
 
 class CompilerParser {
+    // --- JIA Added ---
+    private:
+        std::vector<Token*> _tokens;
+
+    // -----------------
     public:
         CompilerParser(std::vector<Token*> tokens);
 

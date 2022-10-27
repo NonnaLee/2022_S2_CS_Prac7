@@ -6,13 +6,23 @@
  * @param tokens A linked list of tokens to be parsed
  */
 CompilerParser::CompilerParser(std::vector<Token*> tokens) {
+    _tokens = tokens;
 }
 
 /**
  * Generates a parse tree for a single program
  */
 ParseTree* CompilerParser::compileProgram() {
-    return NULL;
+    ParseTree* parseTree = new ParseTree(_tokens[0]->getValue(),"");
+    for (int i = 1; i < _tokens.size(); i++) {
+        ParseTree* parseTree2 = new ParseTree(_tokens[i]->getType(), _tokens[i]->getValue());
+        parseTree->addChild(parseTree2);
+        //if (_tokens[i]->getType() == "class") {
+            
+        //}
+    }
+    
+    return parseTree;
 }
 
 /**
