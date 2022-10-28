@@ -133,7 +133,7 @@ ParseTree* CompilerParser::compileSubroutineBody() {
             parseTree->addChild(compileVarDec());
         }
         else if (_token->getValue() == "let") {
-            parseTree->addChild(compileLet());
+            parseTree->addChild(compileStatements());
         }
         else {
             TokenToParseTree(parseTree);
@@ -163,14 +163,33 @@ ParseTree* CompilerParser::compileVarDec() {
  * Generates a parse tree for a series of statements
  */
 ParseTree* CompilerParser::compileStatements() {
-    return NULL;
+    ParseTree* parseTree = new ParseTree("statements", "");
+    while (_token != NULL) {
+        if (_token->getValue() == "let") {
+            parseTree->addChild(compileLet());
+        }
+        else if (_token->getValue() == "do") 
+        {
+            parseTree->addChild(compileDo());
+        }
+        else if (_token->getValue() == "return")
+        {
+            parseTree->addChild(compileReturn());
+        }
+        else if (_token->getValue() == "}") {
+            return parseTree;
+        }
+        else {
+            throw ParseException();
+        }
+    }
 }
 
 /**
  * Generates a parse tree for a let statement
  */
 ParseTree* CompilerParser::compileLet() {
-    ParseTree* parseTree = new ParseTree("varDec", "");
+    ParseTree* parseTree = new ParseTree("statements", "");
     while (_token != NULL) {
         TokenToParseTree(parseTree);
         if (_tokenPrevious->getValue() == ";") {
