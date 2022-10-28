@@ -63,6 +63,9 @@ ParseTree* CompilerParser::compileProgram() {
     if (_token->getValue() == "var") {
         return compileVarDec();
     }
+    else if (_token->getValue() == "if") {
+        return compileIf();
+    }
     else if (_token->getValue() == "let") {
         return compileStatements();
     }
@@ -222,7 +225,19 @@ ParseTree* CompilerParser::compileLet() {
  * Generates a parse tree for an if statement
  */
 ParseTree* CompilerParser::compileIf() {
-    return NULL;
+    auto parseTree = AddUntill("ifStatement", { "(" }, true);
+    parseTree->addChild(compileExpression());
+    TokenToParseTree(parseTree); // )
+    TokenToParseTree(parseTree); // {
+    parseTree->addChild(compileStatements());
+    TokenToParseTree(parseTree); // }
+    if (_token->getValue() == "else") {
+        TokenToParseTree(parseTree); // else
+        TokenToParseTree(parseTree); // {
+        parseTree->addChild(compileStatements());
+        TokenToParseTree(parseTree); // }
+    }
+    return parseTree;
 }
 
 /**
@@ -255,7 +270,7 @@ ParseTree* CompilerParser::compileReturn() {
  * Generates a parse tree for an expression
  */
 ParseTree* CompilerParser::compileExpression() {
-    return AddUntill("expression", { ";" }, false);
+    return AddUntill("expression", { ";",")"}, false);
 }
 
 /**
