@@ -182,7 +182,7 @@ ParseTree* CompilerParser::compileStatements() {
         }
         else if (_token->getValue() == "do") 
         {
-            parseTree->addChild(compileDo());
+            //parseTree->addChild(compileDo());
         }
         else if (_token->getValue() == "return")
         {
