@@ -70,10 +70,11 @@ ParseTree* CompilerParser::compileClass() {
 ParseTree* CompilerParser::compileClassVarDec() {
     ParseTree* parseTree = new ParseTree("classVarDec", "");
     while (_token != NULL) {
-        if (_token->getValue() == "}") {
+        auto token = _token;
+        TokenToParseTree(parseTree);
+        if (token->getValue() == ";") {
             return parseTree;
         }
-        TokenToParseTree(parseTree);
     }
     return parseTree;
     
