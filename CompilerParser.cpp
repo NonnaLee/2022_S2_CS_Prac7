@@ -154,15 +154,16 @@ ParseTree* CompilerParser::compileParameterList() {
     int typeShould = 0;
     ParseTree* parseTree = new ParseTree("parameterList", "");
     while (_token != NULL) {
+        if (_token->getValue() == "=") {
+            parseTree->addChild(compileExpression());
+        }
         if (_token->getValue() == ")") {
             //if (typeShould != 2) {
             //    throw ParseException();
             //}
             return parseTree;
         }
-        if (_token->getValue() == "=") {
-            parseTree->addChild(compileExpression());
-        }
+        
         if (_token->getType() == "keyword") {
             if (!IsAVariableType(_token)) {
                 throw ParseException();
