@@ -7,15 +7,28 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
+    vector<Token*> tokens;
     /* Tokens for:
      *     class MyClass {
      *
      *     }
      */
-    vector<Token*> tokens;
+    //tokens.push_back(new Token("keyword", "class"));
+    //tokens.push_back(new Token("identifier", "MyClass"));
+    //tokens.push_back(new Token("symbol", "{"));
+    //tokens.push_back(new Token("symbol", "}"));
+
+
+    //class Main {
+    //    static int a;
+    //}
     tokens.push_back(new Token("keyword", "class"));
     tokens.push_back(new Token("identifier", "MyClass"));
     tokens.push_back(new Token("symbol", "{"));
+        tokens.push_back(new Token("keyword", "static"));
+        tokens.push_back(new Token("keyword", "int"));
+        tokens.push_back(new Token("identifier", "a"));
+        tokens.push_back(new Token("symbol", ";"));
     tokens.push_back(new Token("symbol", "}"));
 
     try {

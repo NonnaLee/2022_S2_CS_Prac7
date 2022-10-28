@@ -14,6 +14,14 @@ void CompilerParser::NextToken()
     }
 }
 
+ParseTree* CompilerParser::TokenToParseTree(ParseTree* parseTreeParent)
+{
+    auto parseTree = new ParseTree(_token->getType(), _token->getValue());
+    parseTreeParent->addChild(parseTree);
+    NextToken();
+    return parseTree;
+}
+
 /**
  * Constructor for the CompilerParser
  * @param tokens A linked list of tokens to be parsed
@@ -45,9 +53,12 @@ ParseTree* CompilerParser::compileProgram() {
 ParseTree* CompilerParser::compileClass() {
     ParseTree* parseTree = new ParseTree(_token->getValue(), "");
     while (_token != NULL) {
-        ParseTree* parseTree2 = new ParseTree(_token->getType(), _token->getValue());
-        parseTree->addChild(parseTree2);
-        NextToken();
+        if (_token->getValue() == "static") {
+            parseTree->addChild(compileClassVarDec());
+        }
+        else {
+            TokenToParseTree(parseTree);
+        }
     }
     
     return parseTree;
@@ -57,7 +68,15 @@ ParseTree* CompilerParser::compileClass() {
  * Generates a parse tree for a static variable declaration or field declaration
  */
 ParseTree* CompilerParser::compileClassVarDec() {
-    return NULL;
+    ParseTree* parseTree = new ParseTree("classVarDec", "");
+    while (_token != NULL) {
+        if (_token->getValue() == "}") {
+            return parseTree;
+        }
+        TokenToParseTree(parseTree);
+    }
+    return parseTree;
+    
 }
 
 /**
