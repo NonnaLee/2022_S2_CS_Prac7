@@ -52,7 +52,7 @@ ParseTree* CompilerParser::compileProgram() {
         return compileVarDec();
     }
     else if (_token->getValue() == "let") {
-        return compileLet();
+        return compileStatements();
     }
     else if (_token->getValue() == "static") {
         return compileClassVarDec();
@@ -180,13 +180,14 @@ ParseTree* CompilerParser::compileStatements() {
             throw ParseException();
         }
     }
+    return parseTree;
 }
 
 /**
  * Generates a parse tree for a let statement
  */
 ParseTree* CompilerParser::compileLet() {
-    return AddUntill("statements", ";");
+    return AddUntill("letStatement", ";");
 }
 
 /**
