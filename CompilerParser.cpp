@@ -155,9 +155,9 @@ ParseTree* CompilerParser::compileParameterList() {
     ParseTree* parseTree = new ParseTree("parameterList", "");
     while (_token != NULL) {
         if (_token->getValue() == ")") {
-            //if (typeShould != 2) {
-            //    throw ParseException();
-            //}
+            if (typeShould != 2) {
+                throw ParseException();
+            }
             return parseTree;
         }
         if (_token->getType() == "keyword") {
