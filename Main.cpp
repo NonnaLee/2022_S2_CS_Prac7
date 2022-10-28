@@ -101,15 +101,28 @@ int main(int argc, char *argv[]) {
     //else {
     //
     //}
-    tokens.push_back(new Token("keyword", "if"));
+    //tokens.push_back(new Token("keyword", "if"));
+    //tokens.push_back(new Token("symbol", "("));
+    //tokens.push_back(new Token("keyword", "skip"));
+    //tokens.push_back(new Token("symbol", ")"));
+    //tokens.push_back(new Token("symbol", "{"));
+    //tokens.push_back(new Token("symbol", "}"));
+    //tokens.push_back(new Token("keyword", "else"));
+    //tokens.push_back(new Token("symbol", "{"));
+    //tokens.push_back(new Token("symbol", "}"));
+
+
+    //while (skip) {
+    //
+    //}
+    tokens.push_back(new Token("keyword", "while"));
     tokens.push_back(new Token("symbol", "("));
     tokens.push_back(new Token("keyword", "skip"));
     tokens.push_back(new Token("symbol", ")"));
     tokens.push_back(new Token("symbol", "{"));
     tokens.push_back(new Token("symbol", "}"));
-    tokens.push_back(new Token("keyword", "else"));
-    tokens.push_back(new Token("symbol", "{"));
-    tokens.push_back(new Token("symbol", "}"));
+
+
 
     try {
         CompilerParser parser(tokens);

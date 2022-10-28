@@ -78,6 +78,9 @@ ParseTree* CompilerParser::compileProgram() {
     else if (_token->getValue() == "class") {
         return compileClass();
     }
+    else if (_token->getValue() == "while") {
+        return compileWhile();
+    }
     else {
         //const char* error1 = "ParseError (the program doesn't begin with a class)";
         throw ParseException();
@@ -198,6 +201,9 @@ ParseTree* CompilerParser::compileStatements() {
         {
             parseTree->addChild(compileReturn());
         }
+        else if (_token->getValue() == "while") {
+            parseTree->addChild(compileWhile());
+        }
         else if (_token->getValue() == "}") {
             return parseTree;
         }
@@ -244,7 +250,15 @@ ParseTree* CompilerParser::compileIf() {
  * Generates a parse tree for a while statement
  */
 ParseTree* CompilerParser::compileWhile() {
-    return NULL;
+    ParseTree* parseTree = new ParseTree("whileStatement", "");
+    TokenToParseTree(parseTree); // while
+    TokenToParseTree(parseTree); // (
+    parseTree->addChild(compileExpression());
+    TokenToParseTree(parseTree); // )
+    TokenToParseTree(parseTree); // {
+    parseTree->addChild(compileStatements());
+    TokenToParseTree(parseTree); // }
+    return parseTree;
 }
 
 /**
