@@ -23,6 +23,18 @@ ParseTree* CompilerParser::TokenToParseTree(ParseTree* parseTreeParent)
     return parseTree;
 }
 
+ParseTree* CompilerParser::AddUntill(char* header, char* stopSymbol)
+{
+    ParseTree* parseTree = new ParseTree(header, "");
+    while (_token != NULL) {
+        TokenToParseTree(parseTree);
+        if (_tokenPrevious->getValue() == stopSymbol) {
+            return parseTree;
+        }
+    }
+    return parseTree;
+}
+
 /**
  * Constructor for the CompilerParser
  * @param tokens A linked list of tokens to be parsed
@@ -80,15 +92,7 @@ ParseTree* CompilerParser::compileClass() {
  * Generates a parse tree for a static variable declaration or field declaration
  */
 ParseTree* CompilerParser::compileClassVarDec() {
-    ParseTree* parseTree = new ParseTree("classVarDec", "");
-    while (_token != NULL) {
-        TokenToParseTree(parseTree);
-        if (_tokenPrevious->getValue() == ";") {
-            return parseTree;
-        }
-    }
-    return parseTree;
-    
+    return AddUntill("classVarDec", ";");
 }
 
 /**
@@ -149,14 +153,7 @@ ParseTree* CompilerParser::compileSubroutineBody() {
  * Generates a parse tree for a variable declaration
  */
 ParseTree* CompilerParser::compileVarDec() {
-    ParseTree* parseTree = new ParseTree("varDec", "");
-    while (_token != NULL) {
-        TokenToParseTree(parseTree);
-        if (_tokenPrevious->getValue() == ";") {
-            return parseTree;
-        }
-    }
-    return parseTree;
+    return AddUntill("varDec", ";");
 }
 
 /**
@@ -189,14 +186,7 @@ ParseTree* CompilerParser::compileStatements() {
  * Generates a parse tree for a let statement
  */
 ParseTree* CompilerParser::compileLet() {
-    ParseTree* parseTree = new ParseTree("statements", "");
-    while (_token != NULL) {
-        TokenToParseTree(parseTree);
-        if (_tokenPrevious->getValue() == ";") {
-            return parseTree;
-        }
-    }
-    return parseTree;
+    return AddUntill("statements", ";");
 }
 
 /**
@@ -217,14 +207,14 @@ ParseTree* CompilerParser::compileWhile() {
  * Generates a parse tree for a do statement
  */
 ParseTree* CompilerParser::compileDo() {
-    return NULL;
+    return AddUntill("doStatement", ";");
 }
 
 /**
  * Generates a parse tree for a return statement
  */
 ParseTree* CompilerParser::compileReturn() {
-    return NULL;
+    return AddUntill("returnStatement", ";");
 }
 
 /**
