@@ -36,7 +36,10 @@ CompilerParser::CompilerParser(std::vector<Token*> tokens) {
  */
 ParseTree* CompilerParser::compileProgram() {
 
-    if (_token->getValue() == "class") {
+    if (_token->getValue() == "static") {
+        return compileClassVarDec();
+    }
+    else if (_token->getValue() == "class") {
         return compileClass();
     }
     else {
@@ -55,6 +58,9 @@ ParseTree* CompilerParser::compileClass() {
     while (_token != NULL) {
         if (_token->getValue() == "static") {
             parseTree->addChild(compileClassVarDec());
+        }
+        else if (_token->getValue() == "function") {
+            parseTree->addChild(compileSubroutine());
         }
         else {
             TokenToParseTree(parseTree);
@@ -84,7 +90,14 @@ ParseTree* CompilerParser::compileClassVarDec() {
  * Generates a parse tree for a method, function, or constructor
  */
 ParseTree* CompilerParser::compileSubroutine() {
-    return NULL;
+    ParseTree* parseTree = new ParseTree("subroutine", "");
+    while (_token != NULL) {
+        auto token = _token;
+        TokenToParseTree(parseTree);
+        if (token->getValue() == "}") {
+            return parseTree;
+        }
+    }
 }
 
 /**
