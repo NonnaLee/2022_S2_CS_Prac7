@@ -45,12 +45,17 @@ int main(int argc, char *argv[]) {
 
 
     // let a = skip ;
-    tokens.push_back(new Token("keyword", "let"));
-    tokens.push_back(new Token("identifier", "a"));
-    tokens.push_back(new Token("symbol", "="));
+    //tokens.push_back(new Token("keyword", "let"));
+    //tokens.push_back(new Token("identifier", "a"));
+    //tokens.push_back(new Token("symbol", "="));
+    //tokens.push_back(new Token("keyword", "skip"));
+    //tokens.push_back(new Token("symbol", ";"));
+
+
+    // do skip ;
+    tokens.push_back(new Token("keyword", "do"));
     tokens.push_back(new Token("keyword", "skip"));
     tokens.push_back(new Token("symbol", ";"));
-
 
     //function void myFunc(int a) {
     //    var int a;

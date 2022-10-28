@@ -23,15 +23,25 @@ ParseTree* CompilerParser::TokenToParseTree(ParseTree* parseTreeParent)
     return parseTree;
 }
 
-ParseTree* CompilerParser::AddUntill(char* header, std::vector<char*> stopSymbol)
+ParseTree* CompilerParser::AddUntill(char* header, std::vector<char*> stopSymbol, bool includeLast)
 {
     ParseTree* parseTree = new ParseTree(header, "");
     while (_token != NULL) {
-        TokenToParseTree(parseTree);
+        
+        bool stop = false;
         for (int i = 0; i < stopSymbol.size(); i++) {
-            if (_tokenPrevious->getValue() == stopSymbol[i]) {
-                return parseTree;
+            if (_token->getValue() == stopSymbol[i]) {
+                stop = true;
             }
+        }
+        if (stop) {
+            if (includeLast) {
+                TokenToParseTree(parseTree);
+            }
+            return parseTree;
+        }
+        else {
+            TokenToParseTree(parseTree);
         }
     }
     return parseTree;
@@ -55,6 +65,9 @@ ParseTree* CompilerParser::compileProgram() {
     }
     else if (_token->getValue() == "let") {
         return compileStatements();
+    }
+    else if (_token->getValue() == "do") {
+        return compileDo();
     }
     else if (_token->getValue() == "static") {
         return compileClassVarDec();
@@ -94,7 +107,7 @@ ParseTree* CompilerParser::compileClass() {
  * Generates a parse tree for a static variable declaration or field declaration
  */
 ParseTree* CompilerParser::compileClassVarDec() {
-    return AddUntill("classVarDec", { ";" });
+    return AddUntill("classVarDec", { ";" }, true);
 }
 
 /**
@@ -155,7 +168,7 @@ ParseTree* CompilerParser::compileSubroutineBody() {
  * Generates a parse tree for a variable declaration
  */
 ParseTree* CompilerParser::compileVarDec() {
-    return AddUntill("varDec", { ";" });
+    return AddUntill("varDec", { ";" }, true);
 }
 
 /**
@@ -189,7 +202,7 @@ ParseTree* CompilerParser::compileStatements() {
  * Generates a parse tree for a let statement
  */
 ParseTree* CompilerParser::compileLet() {
-     auto parseTree = AddUntill("letStatement", { ";","="});
+     auto parseTree = AddUntill("letStatement", { ";","="}, true);
      if (_tokenPrevious->getValue() == "=") {
          parseTree->addChild(compileExpression());
      }
@@ -215,21 +228,26 @@ ParseTree* CompilerParser::compileWhile() {
  * Generates a parse tree for a do statement
  */
 ParseTree* CompilerParser::compileDo() {
-    return AddUntill("doStatement", { ";" });
+    
+    ParseTree* parseTree = new ParseTree("doStatement", "");
+    TokenToParseTree(parseTree);
+    parseTree->addChild(AddUntill("expression", { ";" }, false));
+    TokenToParseTree(parseTree);
+    return parseTree;
 }
 
 /**
  * Generates a parse tree for a return statement
  */
 ParseTree* CompilerParser::compileReturn() {
-    return AddUntill("returnStatement", { ";" });
+    return AddUntill("returnStatement", { ";" }, true);
 }
 
 /**
  * Generates a parse tree for an expression
  */
 ParseTree* CompilerParser::compileExpression() {
-    return AddUntill("expression", { ";" });
+    return AddUntill("expression", { ";" }, false);
 }
 
 /**
