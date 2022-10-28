@@ -10,6 +10,7 @@ void CompilerParser::NextToken()
         _token = NULL;
     }
     else {
+        _tokenPrevious = _token;
         _token = _tokens[_index];
     }
 }
@@ -35,8 +36,10 @@ CompilerParser::CompilerParser(std::vector<Token*> tokens) {
  * Generates a parse tree for a single program
  */
 ParseTree* CompilerParser::compileProgram() {
-
-    if (_token->getValue() == "static") {
+    if (_token->getValue() == "var") {
+        return compileVarDec();
+    }
+    else if (_token->getValue() == "static") {
         return compileClassVarDec();
     }
     else if (_token->getValue() == "class") {
@@ -76,9 +79,8 @@ ParseTree* CompilerParser::compileClass() {
 ParseTree* CompilerParser::compileClassVarDec() {
     ParseTree* parseTree = new ParseTree("classVarDec", "");
     while (_token != NULL) {
-        auto token = _token;
         TokenToParseTree(parseTree);
-        if (token->getValue() == ";") {
+        if (_tokenPrevious->getValue() == ";") {
             return parseTree;
         }
     }
@@ -92,9 +94,8 @@ ParseTree* CompilerParser::compileClassVarDec() {
 ParseTree* CompilerParser::compileSubroutine() {
     ParseTree* parseTree = new ParseTree("subroutine", "");
     while (_token != NULL) {
-        auto token = _token;
         TokenToParseTree(parseTree);
-        if (token->getValue() == "}") {
+        if (_tokenPrevious->getValue() == "}") {
             return parseTree;
         }
     }
@@ -104,7 +105,15 @@ ParseTree* CompilerParser::compileSubroutine() {
  * Generates a parse tree for a subroutine's parameters
  */
 ParseTree* CompilerParser::compileParameterList() {
-    return NULL;
+    ParseTree* parseTree = new ParseTree("parameterList", "");
+    while (_token != NULL) {
+        if (_token->getValue() == ")") {
+            return parseTree;
+        }
+        TokenToParseTree(parseTree);
+
+    }
+    return parseTree;
 }
 
 /**
@@ -118,7 +127,14 @@ ParseTree* CompilerParser::compileSubroutineBody() {
  * Generates a parse tree for a variable declaration
  */
 ParseTree* CompilerParser::compileVarDec() {
-    return NULL;
+    ParseTree* parseTree = new ParseTree("varDec", "");
+    while (_token != NULL) {
+        TokenToParseTree(parseTree);
+        if (_tokenPrevious->getValue() == ";") {
+            return parseTree;
+        }
+    }
+    return parseTree;
 }
 
 /**

@@ -12,6 +12,7 @@ class CompilerParser {
     private:
         std::vector<Token*> _tokens;
         Token* _token;
+        Token* _tokenPrevious;
         int _index = 0;
         void NextToken();
         ParseTree* TokenToParseTree(ParseTree*);
