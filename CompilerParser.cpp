@@ -81,6 +81,9 @@ ParseTree* CompilerParser::compileProgram() {
     else if (_token->getValue() == "while") {
         return compileWhile();
     }
+    else if (_token->getValue() == "{") {
+        return compileSubroutineBody();
+    }
     else {
         //const char* error1 = "ParseError (the program doesn't begin with a class)";
         throw ParseException();
@@ -124,13 +127,14 @@ ParseTree* CompilerParser::compileSubroutine() {
     while (_token != NULL) {
         
         if (_token->getValue() == "{") {
-            compileSubroutineBody();
+            parseTree->addChild(compileSubroutineBody());
             return parseTree;
         }
         else {
             TokenToParseTree(parseTree);
         }
     }
+    return parseTree;
 }
 
 /**
@@ -153,6 +157,7 @@ ParseTree* CompilerParser::compileParameterList() {
  */
 ParseTree* CompilerParser::compileSubroutineBody() {
     ParseTree* parseTree = new ParseTree("subroutineBody", "");
+    TokenToParseTree(parseTree);
     while (_token != NULL) {
         if (_token->getValue() == "var") {
             parseTree->addChild(compileVarDec());
@@ -161,9 +166,13 @@ ParseTree* CompilerParser::compileSubroutineBody() {
             parseTree->addChild(compileStatements());
         }
         else {
-            TokenToParseTree(parseTree);
-            if (_tokenPrevious->getValue() == "}") {
+
+            if (_token->getValue() == "}") {
+                TokenToParseTree(parseTree);
                 return parseTree;
+            }
+            else {
+                // think need to throw an error here
             }
         }
     }
@@ -221,7 +230,7 @@ ParseTree* CompilerParser::compileLet() {
      auto parseTree = AddUntill("letStatement", { ";","="}, true);
      if (_tokenPrevious->getValue() == "=") {;
          parseTree->addChild(compileExpression());
-         TokenToParseTree(parseTree);
+         TokenToParseTree(parseTree); // ;
      }
      
      return parseTree;
