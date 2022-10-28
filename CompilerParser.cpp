@@ -31,6 +31,10 @@ ParseTree* CompilerParser::compileProgram() {
     if (_token->getValue() == "class") {
         return compileClass();
     }
+    else {
+        //const char* error1 = "ParseError (the program doesn't begin with a class)";
+        throw ParseException();
+    }
 
     return NULL;
 }
