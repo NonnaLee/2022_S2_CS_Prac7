@@ -170,7 +170,7 @@ ParseTree* CompilerParser::compileStatements() {
  * Generates a parse tree for a let statement
  */
 ParseTree* CompilerParser::compileLet() {
-    ParseTree* parseTree = new ParseTree("letDec", "");
+    ParseTree* parseTree = new ParseTree("varDec", "");
     while (_token != NULL) {
         TokenToParseTree(parseTree);
         if (_tokenPrevious->getValue() == ";") {
