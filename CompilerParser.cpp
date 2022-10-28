@@ -39,6 +39,9 @@ ParseTree* CompilerParser::compileProgram() {
     if (_token->getValue() == "var") {
         return compileVarDec();
     }
+    else if (_token->getValue() == "let") {
+        return compileLet();
+    }
     else if (_token->getValue() == "static") {
         return compileClassVarDec();
     }
@@ -94,9 +97,13 @@ ParseTree* CompilerParser::compileClassVarDec() {
 ParseTree* CompilerParser::compileSubroutine() {
     ParseTree* parseTree = new ParseTree("subroutine", "");
     while (_token != NULL) {
-        TokenToParseTree(parseTree);
-        if (_tokenPrevious->getValue() == "}") {
+        
+        if (_token->getValue() == "{") {
+            compileSubroutineBody();
             return parseTree;
+        }
+        else {
+            TokenToParseTree(parseTree);
         }
     }
 }
@@ -120,7 +127,22 @@ ParseTree* CompilerParser::compileParameterList() {
  * Generates a parse tree for a subroutine's body
  */
 ParseTree* CompilerParser::compileSubroutineBody() {
-    return NULL;
+    ParseTree* parseTree = new ParseTree("subroutineBody", "");
+    while (_token != NULL) {
+        if (_token->getValue() == "var") {
+            parseTree->addChild(compileVarDec());
+        }
+        else if (_token->getValue() == "let") {
+            parseTree->addChild(compileLet());
+        }
+        else {
+            TokenToParseTree(parseTree);
+            if (_tokenPrevious->getValue() == "}") {
+                return parseTree;
+            }
+        }
+    }
+    
 }
 
 /**
@@ -148,7 +170,14 @@ ParseTree* CompilerParser::compileStatements() {
  * Generates a parse tree for a let statement
  */
 ParseTree* CompilerParser::compileLet() {
-    return NULL;
+    ParseTree* parseTree = new ParseTree("letDec", "");
+    while (_token != NULL) {
+        TokenToParseTree(parseTree);
+        if (_tokenPrevious->getValue() == ";") {
+            return parseTree;
+        }
+    }
+    return parseTree;
 }
 
 /**
