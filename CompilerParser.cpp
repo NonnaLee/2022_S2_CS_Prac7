@@ -42,6 +42,9 @@ ParseTree* CompilerParser::compileProgram() {
             NextToken();
         }
     }
+    if (programTree->getChildren().size() == 1) {
+        return programTree->getChildren()[0];
+    }
     
     return programTree;
 }
