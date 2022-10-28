@@ -115,7 +115,7 @@ ParseTree* CompilerParser::compileProgram() {
 ParseTree* CompilerParser::compileClass() {
     ParseTree* parseTree = new ParseTree(_token->getValue(), "");
     while (_token != NULL) {
-        if (_token->getValue() == "static") {
+        if (_token->getValue() == "static" || _token->getValue() == "field") {
             parseTree->addChild(compileClassVarDec());
         }
         else if (_token->getValue() == "function") {
