@@ -180,10 +180,10 @@ ParseTree* CompilerParser::compileStatements() {
         if (_token->getValue() == "let") {
             parseTree->addChild(compileLet());
         }
-        else if (_token->getValue() == "do") 
-        {
-            parseTree->addChild(compileDo());
-        }
+        //else if (_token->getValue() == "do") 
+        //{
+        //    parseTree->addChild(compileDo());
+        //}
         else if (_token->getValue() == "return")
         {
             parseTree->addChild(compileReturn());
