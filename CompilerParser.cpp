@@ -192,8 +192,8 @@ ParseTree* CompilerParser::compileStatements() {
             return parseTree;
         }
         else {
-            return parseTree;
-            // throw ParseException();
+            //return parseTree;
+            throw ParseException();
         }
     }
     return parseTree;
