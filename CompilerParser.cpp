@@ -149,10 +149,13 @@ ParseTree* CompilerParser::compileParameterList() {
         else if (typeShould == 1 && _token->getType() != "identifier") {
             throw ParseException();
         }
-        else if (typeShould == 3 && _token->getType() != "symbol") {
+        else if (typeShould == 2 && _token->getType() != "symbol") {
             throw ParseException();
         }
         typeShould++;
+        if (typeShould > 2) {
+            typeShould = 0;
+        }
         TokenToParseTree(parseTree);
 
     }
