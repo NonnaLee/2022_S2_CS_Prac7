@@ -126,12 +126,10 @@ ParseTree* CompilerParser::compileClassVarDec() {
  * Generates a parse tree for a method, function, or constructor
  */
 ParseTree* CompilerParser::compileSubroutine() {
-    ParseTree* parseTree = new ParseTree("subroutine", "");
-    auto parseTree2 = AddUntill("varDec", { "(" }, true);
-    parseTree2->addChild(compileParameterList());
+    auto parseTree = AddUntill("subroutine", { "(" }, true);
+    parseTree->addChild(compileParameterList());
     TokenToParseTree(parseTree); // )
-    parseTree2->addChild(compileSubroutineBody());
-    parseTree->addChild(parseTree2);
+    parseTree->addChild(compileSubroutineBody());
     return parseTree;
 }
 
