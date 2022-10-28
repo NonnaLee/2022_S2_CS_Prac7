@@ -170,11 +170,11 @@ ParseTree* CompilerParser::compileSubroutineBody() {
 ParseTree* CompilerParser::compileVarDec() {
     //return AddUntill("varDec", { ";" }, true);
 
-    auto parseTree = AddUntill("varDec", { ";","=" }, false);
+    auto parseTree = AddUntill("varDec", { ";","=" }, true);
     if (_tokenPrevious->getValue() == "=") {
         parseTree->addChild(compileExpression());
+        TokenToParseTree(parseTree);
     }
-    TokenToParseTree(parseTree);
     return parseTree;
 }
 
@@ -209,11 +209,12 @@ ParseTree* CompilerParser::compileStatements() {
  * Generates a parse tree for a let statement
  */
 ParseTree* CompilerParser::compileLet() {
-     auto parseTree = AddUntill("letStatement", { ";","="}, false);
-     if (_tokenPrevious->getValue() == "=") {
+     auto parseTree = AddUntill("letStatement", { ";","="}, true);
+     if (_tokenPrevious->getValue() == "=") {;
          parseTree->addChild(compileExpression());
+         TokenToParseTree(parseTree);
      }
-     TokenToParseTree(parseTree);
+     
      return parseTree;
 }
 
