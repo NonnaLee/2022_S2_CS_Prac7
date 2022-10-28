@@ -207,7 +207,7 @@ ParseTree* CompilerParser::compileLet() {
      if (_tokenPrevious->getValue() == "=") {
          parseTree->addChild(compileExpression());
      }
-     
+     TokenToParseTree(parseTree);
      return parseTree;
 }
 
