@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 
 
     // let a = skip ;
-    tokens.push_back(new Token("keyword", "let"));
+    tokens.push_back(new Token("keyword", "var"));
     tokens.push_back(new Token("identifier", "a"));
     tokens.push_back(new Token("symbol", "="));
     tokens.push_back(new Token("keyword", "skip"));
@@ -61,21 +61,39 @@ int main(int argc, char *argv[]) {
     //    var int a;
     //    let a = 1;
     //}
+    // tokens.push_back(new Token("keyword", "function"));
+    // tokens.push_back(new Token("keyword", "void"));
+    // tokens.push_back(new Token("identifier", "myFunc"));
+    // tokens.push_back(new Token("symbol", "("));
+    // tokens.push_back(new Token("keyword", "int"));
+    // tokens.push_back(new Token("identifier", "a"));
+    // tokens.push_back(new Token("symbol", ")"));
+    // tokens.push_back(new Token("symbol", "{"));
+    // tokens.push_back(new Token("keyword", "var"));
+    // tokens.push_back(new Token("keyword", "int"));
+    // tokens.push_back(new Token("identifier", "a"));
+    // tokens.push_back(new Token("symbol", ";"));
+    // tokens.push_back(new Token("keyword", "let"));
+    // tokens.push_back(new Token("identifier", "a"));
+    // tokens.push_back(new Token("symbol", "="));
+    // tokens.push_back(new Token("integerConstant", "1"));
+    // tokens.push_back(new Token("symbol", ";"));
+    // tokens.push_back(new Token("symbol", "}"));
 
     //let a = skip;
     //do skip;
     //return;
 
-    tokens.push_back(new Token("keyword", "let"));
-    tokens.push_back(new Token("identifier", "a"));
-    tokens.push_back(new Token("symbol", "="));
-    tokens.push_back(new Token("keyword", "skip"));
-    tokens.push_back(new Token("symbol", ";"));
-    tokens.push_back(new Token("keyword", "do"));
-    tokens.push_back(new Token("keyword", "skip"));
-    tokens.push_back(new Token("symbol", ";"));
-    tokens.push_back(new Token("keyword", "return"));
-    tokens.push_back(new Token("symbol", ";"));
+    //tokens.push_back(new Token("keyword", "let"));
+    //tokens.push_back(new Token("identifier", "a"));
+    //tokens.push_back(new Token("symbol", "="));
+    //tokens.push_back(new Token("keyword", "skip"));
+    //tokens.push_back(new Token("symbol", ";"));
+    //tokens.push_back(new Token("keyword", "do"));
+    //tokens.push_back(new Token("keyword", "skip"));
+    //tokens.push_back(new Token("symbol", ";"));
+    //tokens.push_back(new Token("keyword", "return"));
+    //tokens.push_back(new Token("symbol", ";"));
 
 
     try {

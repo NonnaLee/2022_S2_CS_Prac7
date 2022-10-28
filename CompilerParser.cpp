@@ -170,7 +170,7 @@ ParseTree* CompilerParser::compileSubroutineBody() {
 ParseTree* CompilerParser::compileVarDec() {
     //return AddUntill("varDec", { ";" }, true);
 
-    auto parseTree = AddUntill("varDec", { ";","=" }, true);
+    auto parseTree = AddUntill("varDec", { ";","=" }, false);
     if (_tokenPrevious->getValue() == "=") {
         parseTree->addChild(compileExpression());
     }
