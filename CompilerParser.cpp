@@ -47,6 +47,20 @@ ParseTree* CompilerParser::AddUntill(char* header, std::vector<char*> stopSymbol
     return parseTree;
 }
 
+bool CompilerParser::IsAVariableType(Token* token)
+{
+    auto str = token->getValue();
+    if (
+           str == "int"
+        || str == "boolean"
+        || str == "char"
+        || str == "int"
+    ) {
+        return true;
+    }
+    return false;
+}
+
 /**
  * Constructor for the CompilerParser
  * @param tokens A linked list of tokens to be parsed
@@ -145,6 +159,11 @@ ParseTree* CompilerParser::compileParameterList() {
             //    throw ParseException();
             //}
             return parseTree;
+        }
+        if (_token->getType() == "keyword") {
+            if (!IsAVariableType(_token)) {
+                throw ParseException();
+            }
         }
         if (typeShould == 0 && _token->getType() != "keyword") {
             throw ParseException();

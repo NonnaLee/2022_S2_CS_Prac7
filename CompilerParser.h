@@ -17,6 +17,7 @@ class CompilerParser {
         void NextToken();
         ParseTree* TokenToParseTree(ParseTree*);
         ParseTree* AddUntill(char*, std::vector<char*>, bool includeLast);
+        bool IsAVariableType(Token* token);
     // -----------------
     public:
         CompilerParser(std::vector<Token*> tokens);
