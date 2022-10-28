@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 
 
     // let a = skip ;
-    tokens.push_back(new Token("keyword", "var"));
+    tokens.push_back(new Token("keyword", "let"));
     tokens.push_back(new Token("identifier", "a"));
     tokens.push_back(new Token("symbol", "="));
     tokens.push_back(new Token("keyword", "skip"));

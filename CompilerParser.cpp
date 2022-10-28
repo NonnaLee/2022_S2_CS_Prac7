@@ -209,7 +209,7 @@ ParseTree* CompilerParser::compileStatements() {
  * Generates a parse tree for a let statement
  */
 ParseTree* CompilerParser::compileLet() {
-     auto parseTree = AddUntill("letStatement", { ";","="}, true);
+     auto parseTree = AddUntill("letStatement", { ";","="}, false);
      if (_tokenPrevious->getValue() == "=") {
          parseTree->addChild(compileExpression());
      }
