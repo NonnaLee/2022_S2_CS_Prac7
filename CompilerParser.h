@@ -11,7 +11,9 @@ class CompilerParser {
     // --- JIA Added ---
     private:
         std::vector<Token*> _tokens;
-
+        Token* _token;
+        int _index = 0;
+        void NextToken();
     // -----------------
     public:
         CompilerParser(std::vector<Token*> tokens);

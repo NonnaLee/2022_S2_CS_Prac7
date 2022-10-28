@@ -1,5 +1,18 @@
 #include "CompilerParser.h"
 
+/**
+* JIA - ADDED 
+*/
+void CompilerParser::NextToken()
+{
+    _index++;
+    if (_index == _tokens.size()) {
+        _token = NULL;
+    }
+    else {
+        _token = _tokens[_index];
+    }
+}
 
 /**
  * Constructor for the CompilerParser
@@ -7,32 +20,45 @@
  */
 CompilerParser::CompilerParser(std::vector<Token*> tokens) {
     _tokens = tokens;
+    _token = _tokens[0];
 }
 
 /**
  * Generates a parse tree for a single program
  */
 ParseTree* CompilerParser::compileProgram() {
-    if (_tokens[0]->getValue() != "class") {
-        return NULL;
-    }
-    ParseTree* parseTree = new ParseTree(_tokens[0]->getValue(),"");
-    for (int i = 1; i < _tokens.size(); i++) {
-        ParseTree* parseTree2 = new ParseTree(_tokens[i]->getType(), _tokens[i]->getValue());
-        parseTree->addChild(parseTree2);
-        //if (_tokens[i]->getType() == "class") {
-            
-        //}
+    //if (_tokens[0]->getValue() != "class") {
+    //    return NULL;
+    //}
+    ParseTree* programTree = new ParseTree("", "");
+    while (_token != NULL) {
+        if (_token->getValue() == "class") {
+            auto classTree = compileClass();
+            if (classTree != NULL) {
+                programTree->addChild(classTree);
+            }
+        }
+        else {
+            NextToken();
+        }
     }
     
-    return parseTree;
+    return programTree;
 }
 
 /**
  * Generates a parse tree for a single class
  */
 ParseTree* CompilerParser::compileClass() {
-    return NULL;
+    ParseTree* parseTree = new ParseTree(_token->getValue(), "");
+    NextToken();
+    while (_token != NULL) {
+        ParseTree* parseTree2 = new ParseTree(_token->getType(), _token->getValue());
+        parseTree->addChild(parseTree2);
+        NextToken();
+    }
+    
+    return parseTree;
 }
 
 /**
