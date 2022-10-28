@@ -137,11 +137,22 @@ ParseTree* CompilerParser::compileSubroutine() {
  * Generates a parse tree for a subroutine's parameters
  */
 ParseTree* CompilerParser::compileParameterList() {
+    int typeShould = 0;
     ParseTree* parseTree = new ParseTree("parameterList", "");
     while (_token != NULL) {
         if (_token->getValue() == ")") {
             return parseTree;
         }
+        if (typeShould == 0 && _token->getType() != "keyword") {
+            throw ParseException();
+        }
+        else if (typeShould == 1 && _token->getType() != "identifier") {
+            throw ParseException();
+        }
+        else if (typeShould == 3 && _token->getType() != "symbol") {
+            throw ParseException();
+        }
+        typeShould++;
         TokenToParseTree(parseTree);
 
     }
