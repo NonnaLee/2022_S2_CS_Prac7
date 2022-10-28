@@ -231,7 +231,7 @@ ParseTree* CompilerParser::compileIf() {
     TokenToParseTree(parseTree); // {
     parseTree->addChild(compileStatements());
     TokenToParseTree(parseTree); // }
-    if (_token->getValue() == "else") {
+    if (_token!= NULL && _token->getValue() == "else") {
         TokenToParseTree(parseTree); // else
         TokenToParseTree(parseTree); // {
         parseTree->addChild(compileStatements());
