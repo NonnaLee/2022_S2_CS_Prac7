@@ -165,6 +165,11 @@ ParseTree* CompilerParser::compileParameterList() {
                 throw ParseException();
             }
         }
+        else {
+            if (IsAVariableType(_token)) {
+                throw ParseException();
+            }
+        }
         if (typeShould == 0 && _token->getType() != "keyword") {
             throw ParseException();
         }
