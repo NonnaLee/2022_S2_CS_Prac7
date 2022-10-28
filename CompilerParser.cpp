@@ -81,6 +81,9 @@ ParseTree* CompilerParser::compileProgram() {
     else if (_token->getValue() == "while") {
         return compileWhile();
     }
+    else if (_token->getValue() == "function") {
+        return compileSubroutine();
+    }
     else if (_token->getValue() == "{") {
         return compileSubroutineBody();
     }
@@ -124,16 +127,11 @@ ParseTree* CompilerParser::compileClassVarDec() {
  */
 ParseTree* CompilerParser::compileSubroutine() {
     ParseTree* parseTree = new ParseTree("subroutine", "");
-    while (_token != NULL) {
-        
-        if (_token->getValue() == "{") {
-            parseTree->addChild(compileSubroutineBody());
-            return parseTree;
-        }
-        else {
-            TokenToParseTree(parseTree);
-        }
-    }
+    auto parseTree2 = AddUntill("varDec", { "(" }, true);
+    parseTree2->addChild(compileParameterList());
+    TokenToParseTree(parseTree); // )
+    parseTree2->addChild(compileSubroutineBody());
+    parseTree->addChild(parseTree2);
     return parseTree;
 }
 
