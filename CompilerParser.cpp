@@ -155,10 +155,13 @@ ParseTree* CompilerParser::compileParameterList() {
     ParseTree* parseTree = new ParseTree("parameterList", "");
     while (_token != NULL) {
         if (_token->getValue() == ")") {
-            if (typeShould != 2) {
-                throw ParseException();
-            }
+            //if (typeShould != 2) {
+            //    throw ParseException();
+            //}
             return parseTree;
+        }
+        if (_token->getValue() == "=") {
+            parseTree->addChild(compileExpression());
         }
         if (_token->getType() == "keyword") {
             if (!IsAVariableType(_token)) {
@@ -333,7 +336,7 @@ ParseTree* CompilerParser::compileReturn() {
  * Generates a parse tree for an expression
  */
 ParseTree* CompilerParser::compileExpression() {
-    return AddUntill("expression", { ";",")"}, false);
+    return AddUntill("expression", { ",",";",")"}, false);
 }
 
 /**
