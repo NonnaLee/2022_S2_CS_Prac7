@@ -23,13 +23,15 @@ ParseTree* CompilerParser::TokenToParseTree(ParseTree* parseTreeParent)
     return parseTree;
 }
 
-ParseTree* CompilerParser::AddUntill(char* header, char* stopSymbol)
+ParseTree* CompilerParser::AddUntill(char* header, std::vector<char*> stopSymbol)
 {
     ParseTree* parseTree = new ParseTree(header, "");
     while (_token != NULL) {
         TokenToParseTree(parseTree);
-        if (_tokenPrevious->getValue() == stopSymbol) {
-            return parseTree;
+        for (int i = 0; i < stopSymbol.size(); i++) {
+            if (_tokenPrevious->getValue() == stopSymbol[i]) {
+                return parseTree;
+            }
         }
     }
     return parseTree;
@@ -92,7 +94,7 @@ ParseTree* CompilerParser::compileClass() {
  * Generates a parse tree for a static variable declaration or field declaration
  */
 ParseTree* CompilerParser::compileClassVarDec() {
-    return AddUntill("classVarDec", ";");
+    return AddUntill("classVarDec", { ";" });
 }
 
 /**
@@ -153,7 +155,7 @@ ParseTree* CompilerParser::compileSubroutineBody() {
  * Generates a parse tree for a variable declaration
  */
 ParseTree* CompilerParser::compileVarDec() {
-    return AddUntill("varDec", ";");
+    return AddUntill("varDec", { ";" });
 }
 
 /**
@@ -187,7 +189,12 @@ ParseTree* CompilerParser::compileStatements() {
  * Generates a parse tree for a let statement
  */
 ParseTree* CompilerParser::compileLet() {
-    return AddUntill("letStatement", ";");
+     auto parseTree = AddUntill("letStatement", { ";","="});
+     if (_tokenPrevious->getValue() == "=") {
+         parseTree->addChild(compileExpression());
+     }
+     
+     return parseTree;
 }
 
 /**
@@ -208,21 +215,21 @@ ParseTree* CompilerParser::compileWhile() {
  * Generates a parse tree for a do statement
  */
 ParseTree* CompilerParser::compileDo() {
-    return AddUntill("doStatement", ";");
+    return AddUntill("doStatement", { ";" });
 }
 
 /**
  * Generates a parse tree for a return statement
  */
 ParseTree* CompilerParser::compileReturn() {
-    return AddUntill("returnStatement", ";");
+    return AddUntill("returnStatement", { ";" });
 }
 
 /**
  * Generates a parse tree for an expression
  */
 ParseTree* CompilerParser::compileExpression() {
-    return NULL;
+    return AddUntill("expression", { ";" });
 }
 
 /**
