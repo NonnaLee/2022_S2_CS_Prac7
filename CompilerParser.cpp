@@ -168,7 +168,14 @@ ParseTree* CompilerParser::compileSubroutineBody() {
  * Generates a parse tree for a variable declaration
  */
 ParseTree* CompilerParser::compileVarDec() {
-    return AddUntill("varDec", { ";" }, true);
+    //return AddUntill("varDec", { ";" }, true);
+
+    auto parseTree = AddUntill("varDec", { ";","=" }, true);
+    if (_tokenPrevious->getValue() == "=") {
+        parseTree->addChild(compileExpression());
+    }
+    TokenToParseTree(parseTree);
+    return parseTree;
 }
 
 /**
@@ -192,7 +199,6 @@ ParseTree* CompilerParser::compileStatements() {
             return parseTree;
         }
         else {
-            //return parseTree;
             throw ParseException();
         }
     }
