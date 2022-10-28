@@ -27,26 +27,12 @@ CompilerParser::CompilerParser(std::vector<Token*> tokens) {
  * Generates a parse tree for a single program
  */
 ParseTree* CompilerParser::compileProgram() {
-    //if (_tokens[0]->getValue() != "class") {
-    //    return NULL;
-    //}
-    ParseTree* programTree = new ParseTree("", "");
-    while (_token != NULL) {
-        if (_token->getValue() == "class") {
-            auto classTree = compileClass();
-            if (classTree != NULL) {
-                programTree->addChild(classTree);
-            }
-        }
-        else {
-            NextToken();
-        }
+
+    if (_token->getValue() == "class") {
+        return compileClass();
     }
-    if (programTree->getChildren().size() == 1) {
-        return programTree->getChildren()[0];
-    }
-    
-    return programTree;
+
+    return NULL;
 }
 
 /**
@@ -54,7 +40,6 @@ ParseTree* CompilerParser::compileProgram() {
  */
 ParseTree* CompilerParser::compileClass() {
     ParseTree* parseTree = new ParseTree(_token->getValue(), "");
-    NextToken();
     while (_token != NULL) {
         ParseTree* parseTree2 = new ParseTree(_token->getType(), _token->getValue());
         parseTree->addChild(parseTree2);
