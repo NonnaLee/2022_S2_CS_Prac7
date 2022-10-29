@@ -113,7 +113,10 @@ ParseTree* CompilerParser::compileProgram() {
  * Generates a parse tree for a single class
  */
 ParseTree* CompilerParser::compileClass() {
-    ParseTree* parseTree = new ParseTree(_token->getValue(), "");
+    ParseTree* parseTree = new ParseTree("class", "");
+    TokenToParseTree(parseTree); // class
+    TokenToParseTree(parseTree); // Main
+    TokenToParseTree(parseTree); // {
     while (_token != NULL) {
         if (_token->getValue() == "static" || _token->getValue() == "field") {
             parseTree->addChild(compileClassVarDec());
@@ -121,8 +124,11 @@ ParseTree* CompilerParser::compileClass() {
         else if (_token->getValue() == "function") {
             parseTree->addChild(compileSubroutine());
         }
-        else {
+        else if (_token->getValue() == "}") {
             TokenToParseTree(parseTree);
+        }
+        else {
+            throw new ParseException();
         }
     }
     
